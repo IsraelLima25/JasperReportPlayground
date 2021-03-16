@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="holerite-funcionarios" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dbb4e234-2ce6-46d1-a5c3-2e78f6fb2ec4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MYSQL UDEMY Data Adapter "/>
+	<parameter name="ID_FUNCIONARIO" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT jaspercurso.empresas.razao_social,
+	jaspercurso.empresas.cnpj,
+	jaspercurso.empresas.telefone,
+	jaspercurso.funcionarios.id_funcionario,
+	jaspercurso.funcionarios.nome,
+	jaspercurso.funcionarios.salario,
+	jaspercurso.funcionarios.data_admissao,
+	jaspercurso.funcionarios.id_cargo,
+	jaspercurso.niveis.bonus
+FROM jaspercurso.empresas, jaspercurso.funcionarios 
+INNER JOIN jaspercurso.niveis ON
+jaspercurso.niveis.id_nivel = jaspercurso.funcionarios.id_nivel
+WHERE (jaspercurso.funcionarios.salario <> 0.00) AND
+(jaspercurso.funcionarios.id_funcionario =$P{ID_FUNCIONARIO} OR 
+ jaspercurso.funcionarios.id_funcionario IS NULL
+)
+ORDER BY jaspercurso.funcionarios.nome ASC]]>
+	</queryString>
+	<field name="razao_social" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="razao_social"/>
+		<property name="com.jaspersoft.studio.field.label" value="razao_social"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="empresas"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cnpj" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cnpj"/>
+		<property name="com.jaspersoft.studio.field.label" value="cnpj"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="empresas"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telefone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telefone"/>
+		<property name="com.jaspersoft.studio.field.label" value="telefone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="empresas"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_funcionario" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id_funcionario"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_funcionario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="funcionarios"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="funcionarios"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="salario" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="salario"/>
+		<property name="com.jaspersoft.studio.field.label" value="salario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="funcionarios"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_admissao" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_admissao"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_admissao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="funcionarios"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_cargo" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id_cargo"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_cargo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="funcionarios"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bonus" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="bonus"/>
+		<property name="com.jaspersoft.studio.field.label" value="bonus"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="niveis"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="INSS_PERCENTUAL" class="java.lang.String">
+		<variableExpression><![CDATA[$F{salario}.add($F{salario}.multiply($F{bonus})).compareTo(new BigDecimal(1556.94)) <= 0 ? "8" : 
+$F{salario}.add($F{salario}.multiply($F{bonus})).compareTo(new BigDecimal(1556.95)) >= 0 &&
+$F{salario}.add($F{salario}.multiply($F{bonus})).compareTo(new BigDecimal(2594.92)) < 0 ? "9" :
+$F{salario}.add($F{salario}.multiply($F{bonus})).compareTo(new BigDecimal(2594.93)) >= 0 &&
+$F{salario}.add($F{salario}.multiply($F{bonus})).compareTo(new BigDecimal(5189.82))  <= 0 ? "11" :
+"ISENTO"]]></variableExpression>
+	</variable>
+	<variable name="BONIFICACAO" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{salario}.multiply($F{bonus})]]></variableExpression>
+	</variable>
+	<variable name="PERCENT" class="java.lang.String">
+		<variableExpression><![CDATA["%"]]></variableExpression>
+	</variable>
+	<variable name="SALARIO_BRUTO" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{salario}.add($V{BONIFICACAO})]]></variableExpression>
+	</variable>
+	<variable name="INSS" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{INSS_PERCENTUAL} != "ISENTO" ?  $V{SALARIO_BRUTO}.multiply(new BigDecimal($V{INSS_PERCENTUAL}))
+.divide(new BigDecimal(100))
+: "ISENTO"]]></variableExpression>
+	</variable>
+	<variable name="IRRF_PERCENTUAL" class="java.lang.String">
+		<variableExpression><![CDATA[$V{SALARIO_BRUTO}.subtract($V{INSS}).compareTo(new BigDecimal(1903.98)) <= 0 ? "ISENTO" :
+$V{SALARIO_BRUTO}.subtract($V{INSS}).compareTo(new BigDecimal(1903.99)) >= 0 &&
+$V{SALARIO_BRUTO}.subtract($V{INSS}).compareTo( new BigDecimal(2826.65))<=0 ? "7,5" :
+$V{SALARIO_BRUTO}.subtract($V{INSS}).compareTo(new BigDecimal(2826.66)) >= 0 &&
+$V{SALARIO_BRUTO}.subtract($V{INSS}).compareTo(new BigDecimal(3751.05)) <= 0 ? "15" :
+$V{SALARIO_BRUTO}.subtract($V{INSS}).compareTo(new BigDecimal(3751.06)) >= 0 &&
+$V{SALARIO_BRUTO}.subtract($V{INSS}).compareTo(new BigDecimal(4664.68)) <= 0 ? "22,5" :
+"27,5"]]></variableExpression>
+	</variable>
+	<variable name="IRRF" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{IRRF_PERCENTUAL}.equals("ISENTO") ? new BigDecimal(0.00) :
+$V{IRRF_PERCENTUAL}.equals("7,5") ? $V{SALARIO_BRUTO}.subtract($V{INSS}).
+multiply(new BigDecimal(7.5)).divide(new BigDecimal(100)).subtract(new BigDecimal(142.80)) :
+$V{IRRF_PERCENTUAL}.equals("15") ? $V{SALARIO_BRUTO}.subtract($V{INSS}).
+multiply(new BigDecimal(15)).divide(new BigDecimal(100)).subtract(new BigDecimal(354.80)) : 
+$V{IRRF_PERCENTUAL}.equals("22,5") ? $V{SALARIO_BRUTO}.subtract($V{INSS}).
+multiply(new BigDecimal(22.5)).divide(new BigDecimal(100)).subtract(new BigDecimal(636.13)) :
+$V{SALARIO_BRUTO}.subtract($V{INSS}).multiply(new BigDecimal(27.5)).divide(new BigDecimal(100)).subtract(new BigDecimal(869.36))
+]]></variableExpression>
+	</variable>
+	<variable name="DESCONTO" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{INSS}.add($V{IRRF})]]></variableExpression>
+	</variable>
+	<variable name="SALARIO_LIQUIDO" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{SALARIO_BRUTO}.subtract($V{DESCONTO})]]></variableExpression>
+	</variable>
+	<variable name="BONUS" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{bonus}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{id_funcionario}]]></groupExpression>
+		<groupHeader>
+			<band height="187">
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+				<textField>
+					<reportElement x="0" y="76" width="482" height="37" uuid="f870a785-5a66-48b5-8dc7-dc5f66742673">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="3"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="3"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box leftPadding="50">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cnpj}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="39" width="482" height="37" uuid="dd9990fc-31e5-4363-ac67-5a5387ac27c6">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="2"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="3"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box topPadding="10" leftPadding="50">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{razao_social} + " - " + "("+$F{telefone}.substring(0,2)+") " + $F{telefone}.substring(2,6) + "-"+$F{telefone}.substring(6,10)]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="1" width="802" height="38" uuid="47d138cd-b6b7-4509-ba61-33bdda905b11">
+						<property name="com.jaspersoft.layout.grid.x" value="0"/>
+						<property name="com.jaspersoft.layout.grid.y" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="6"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box leftPadding="1">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="15" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Recibo de Pagamento de Salário]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="113" width="161" height="37" uuid="0a3190eb-0297-4dcc-b8b3-ba2af3900ffa">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="4"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box topPadding="5" leftPadding="5">
+						<leftPen lineWidth="1.0"/>
+					</box>
+					<text><![CDATA[Código]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="161" y="113" width="161" height="37" uuid="88168e64-0f19-4016-9747-8f650389c652"/>
+					<box topPadding="5"/>
+					<text><![CDATA[Nome do Funcionário]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="322" y="113" width="160" height="37" uuid="9add7f0f-4fe7-46bd-b870-774ef64cb502"/>
+					<box topPadding="5"/>
+					<text><![CDATA[Cargo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="482" y="76" width="320" height="37" uuid="8d18779b-ff46-482f-a136-9bd9d759e819">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="3"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="3"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box leftPadding="100">
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[11/ 2020
+]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="482" y="39" width="320" height="37" uuid="5ad190ee-e818-423e-ba55-9bcaad4255de">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="2"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="3"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box leftPadding="100">
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Salário do Mês]]></text>
+				</staticText>
+				<textField pattern="#0000.###;#0000.###-">
+					<reportElement x="0" y="150" width="161" height="37" uuid="fa552114-d135-42fa-81f5-6ea0460ae844">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="5"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box leftPadding="5">
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{id_funcionario}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="161" y="150" width="161" height="37" uuid="5044bd95-80ac-4533-a7b7-885b6afccded"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement x="322" y="150" width="160" height="37" uuid="d2b471f0-3485-477c-abf5-e03fe3d8aa93">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<subreportParameter name="ID_CARGO">
+						<subreportParameterExpression><![CDATA[$F{id_cargo}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["holerite-funcionarios-subreportcargos.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement x="482" y="113" width="160" height="37" uuid="318d13c2-c03c-47b2-bdff-9d9b32de6ffe">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="4"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box topPadding="5"/>
+					<text><![CDATA[Departamento]]></text>
+				</staticText>
+				<subreport>
+					<reportElement x="482" y="150" width="160" height="37" uuid="63b7bf13-f758-4d53-8512-e5912bc8949b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="5"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<subreportParameter name="ID_FUNCIONARIO">
+						<subreportParameterExpression><![CDATA[$F{id_funcionario}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["holerite-funcionarios-subreportdepartamentos.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement x="642" y="113" width="160" height="37" uuid="8d6bbb4d-80b4-4735-8dd8-04442757ce87">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="4"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box topPadding="5">
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<text><![CDATA[Data Admissão]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="642" y="150" width="160" height="37" uuid="96f4a994-0fd8-4bcb-b5ff-74380d15829b">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="5"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{data_admissao}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="73">
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+				<staticText>
+					<reportElement x="0" y="1" width="802" height="18" uuid="1a028237-bb70-4ee6-a6ee-134708a69de8">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="7"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[DECLARO TER RECEBIDO A IMPORTÂNCIA LÍQUIDA DESCRIMINADA NESTE RECIBO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="19" width="401" height="18" uuid="55f5e635-418b-4ea0-b919-4ac614839e2d">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="2"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box>
+						<leftPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[____/ ____/ ____]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="401" y="19" width="401" height="18" uuid="ca06a16a-e28d-473d-b33b-6a9758797608">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="2"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="6"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[_________________________________________________________]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="37" width="401" height="18" uuid="012590e9-e570-4367-9088-4910f6210fb4">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="3"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[DATA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="401" y="37" width="401" height="18" uuid="6beb63e2-1002-4ff1-b863-d862d3de32b8">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="3"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ASSINATURA DO FUNCIONÁRIO]]></text>
+				</staticText>
+				<break>
+					<reportElement x="0" y="55" width="401" height="1" uuid="f17d47b4-aba0-4a17-9614-3f202543210c">
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="4"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					</reportElement>
+				</break>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+			<staticText>
+				<reportElement x="0" y="0" width="268" height="32" uuid="2f33e163-9a2e-4fec-9154-3f6111d75f50"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="268" y="0" width="267" height="32" uuid="2f036d08-5bf6-469d-ab15-e2d2c4ed9996"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Vencimentos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="535" y="0" width="267" height="32" uuid="59587a45-a090-4e0a-9c8b-4f4504cf5f74"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Descontos]]></text>
+			</staticText>
+		</band>
+		<band height="134">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<staticText>
+				<reportElement x="0" y="0" width="268" height="30" uuid="f598ace8-4e53-483a-a39f-6d851388bb6b"/>
+				<box topPadding="5" leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Salário do Mês]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="100" height="33" uuid="260508ff-b531-4022-baba-f0b186bc0ffd"/>
+				<box leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[INSS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="63" width="100" height="40" uuid="ec9806c8-6ddf-4f17-895d-2e8ce2d236a0"/>
+				<box leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[IRRF]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="63" width="168" height="40" uuid="28273ca0-bbbf-4281-8d6a-403d53edf179"/>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{IRRF_PERCENTUAL} != "ISENTO" ?   $V{IRRF_PERCENTUAL} + $V{PERCENT} : $V{IRRF_PERCENTUAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="103" width="100" height="31" uuid="bad966b1-4da8-4ed6-865b-af88259e812b"/>
+				<box leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Bonificação]]></text>
+			</staticText>
+			<textField pattern="#,##0.##%;(#,##0.##-) %">
+				<reportElement x="100" y="103" width="168" height="31" uuid="92631dc4-4cdb-4470-b9f9-017a5102dfb1"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{BONUS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00;¤ -#,##0.00">
+				<reportElement x="268" y="0" width="267" height="30" uuid="ce642684-de70-468e-b8f2-6aae8fc8694a"/>
+				<box topPadding="5" leftPadding="5" rightPadding="5">
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{salario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="535" y="0" width="267" height="30" uuid="9104a04a-2ddf-441f-8a55-3af15aa7a922"/>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="535" y="104" width="267" height="30" uuid="6affa78a-bd9e-4cc5-b405-95e53899643d"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="30" width="168" height="33" uuid="4852da55-17b2-49da-86bb-96340d29ffb1"/>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{INSS_PERCENTUAL} != "ISENTO" ? $V{INSS_PERCENTUAL} + $V{PERCENT} : "ISENTO"]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00;¤ -#,##0.00">
+				<reportElement x="268" y="103" width="267" height="31" uuid="bd9153f0-3fdb-42a3-97e4-43f58945fe6b"/>
+				<box rightPadding="5">
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{BONIFICACAO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00;¤ -#,##0.00">
+				<reportElement x="535" y="30" width="267" height="33" uuid="3e40aa59-0804-4010-8e71-7bcc50bec224"/>
+				<box rightPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{INSS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00;¤- #,##0.00">
+				<reportElement x="535" y="63" width="267" height="41" uuid="02e1d156-42a2-4cfa-817e-6a374c72669b"/>
+				<box rightPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{IRRF}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="40">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<staticText>
+				<reportElement x="0" y="0" width="268" height="40" uuid="918c263d-e6da-4842-a425-788eae95aedd"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="268" y="-1" width="60" height="21" uuid="3409edbf-c902-443d-9d5f-bee0253131fb"/>
+				<box leftPadding="5">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00;¤ -#,##0.00">
+				<reportElement x="328" y="-1" width="207" height="21" uuid="7a44d8c7-8f38-4e75-8391-42be17c28bd7"/>
+				<box rightPadding="5">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{SALARIO_BRUTO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="535" y="-1" width="95" height="21" uuid="bd35293a-2509-4c38-94f2-42d0e31d9416"/>
+				<box leftPadding="5">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00;¤ -#,##0.00">
+				<reportElement x="630" y="-1" width="172" height="21" uuid="1646028c-f89c-4d0e-add0-69eff6c453e1"/>
+				<box rightPadding="5">
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{INSS}.add($V{IRRF})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="268" y="20" width="214" height="20" uuid="73a6172b-d0ff-453e-ab4f-cd7b694f1f6c"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Líquido a Receber]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00;¤ -#,##0.00">
+				<reportElement x="482" y="20" width="320" height="20" uuid="23a293d0-a21b-4959-8a2d-22b2a8efb1f1"/>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{SALARIO_LIQUIDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="54">
+			<staticText>
+				<reportElement x="0" y="12" width="802" height="30" uuid="be391e29-30b1-443b-8aff-fc752715988a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Funcionário não encontrado ou não faz mais parte do quadro funcional da empresa.]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>
